@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>EDITAR PELICULA</title>
+        <link rel='stylesheet' href='/css/style.css' />
+
+    </head>
+        <body>
+            <figure>
+                <img src="/img/logo-DH.png" alt="Logo Digital House">
+            </figure>
+            <form action="/movies/edit/<%= movie.id %>?_method=PUT" method="POST">
+                <h3>FORMULARIO DE EDICIÓN</h3>
+                <div>
+                    <br>
+                    <label for="title" class="form-label">Titulo:</label>
+                    <input id="title" name="title" class="form-input" value="<%= movie.title %>">
+                </div>
+                
+                <div>
+                    <br>
+                    <label for="rating" class="form-label">Rating:</label>
+                    <input id="rating" name="rating" class="form-input" value="<%= movie.rating %>">
+                </div>
+
+                <div>
+                    <br>
+                    <label for="awards" class="form-label">Awards:</label>
+                    <input type="text" id="awards" name="awards" class="form-input" value="<%= movie.awards %>">
+                </div>
+
+                <div>
+                    <br>
+                    <label for="length" class="form-label">Length:</label>
+                    <input type="text" id="length" name="length" class="form-input" value="<%= movie.length %>">
+                </div>
+
+                <div>
+                    <br>
+                    <label for="release_date" class="form-label">Release Date:</label>
+                    <input type="text" id="release_date" name="release_date" class="form-input" value="<%= movie.release_date %>">
+                </div>
+
+                <div>
+                    <br>
+                    <p>Actores que participaron:</p>
+                    <%actors.forEach(actor =>{ %>
+                        <div>
+                            <input id="<% actor.first_name %>" type="checkbox" name="actors" class="form-input" value="<%= actor.id %>">
+                            <label for="<%= actor.first_name %>"><%= actor.first_name %></label>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <div>
+                    <br>
+                    <button type="submit" class="buy-now-button">Guardar Cambios</button>
+                </div>
+            </form>
+        </body>
+</html>

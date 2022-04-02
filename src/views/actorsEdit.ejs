@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>EDITAR ACTOR/ACTRIZ</title>
+        <link rel='stylesheet' href='/css/style.css' />
+    </head>
+        <body>
+            <figure>
+                <img src="/img/logo-DH.png" alt="Logo Digital House">
+            </figure>
+            <form action="/actors/edit/<%= actors.id %>?_method=PUT" method="POST">
+                <h3>FORMULARIO DE EDICIÓN</h3>
+                <div>
+                    <br>
+                    <label for="first_name" class="form-label">NOMBRE:</label>
+                    <textarea id="first_name" name="first_name" class="form-input"><%= actors.first_name%></textarea>
+                </div>
+
+                <div>
+                    <br>
+                    <label for="last_name" class="form-label">APELLIDO:</label>
+                    <textarea type="text" id="last_name" name="last_name" class="form-input"><%= actors.last_name%></textarea>
+                </div>
+
+                <div>
+                    <br>
+                    <label for="rating" class="form-label">RATING:</label>
+                    <textarea id="rating" name="rating" class="form-input"><%= actors.rating%></textarea>
+                </div>
+
+                <div>
+                    <br>
+                    <button type="submit" class="buy-now-button">Guardar Cambios</button>
+                </div>
+            </form>
+        </body>
+</html>

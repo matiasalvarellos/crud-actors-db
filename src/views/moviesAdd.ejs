@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AGREGAR PELICULA </title>
+        <link rel='stylesheet' href='/css/style.css' />
+
+    </head>
+        <body>
+            <figure>
+                <img src="/img/logo-DH.png" alt="Logo Digital House">
+            </figure>
+            <form action="/movies/create" method="POST">
+                <h1>FORMULARIO DE CREACIÓN</h1>
+                <div>
+                    <br>
+                    <label for="title" class="form-label">Titulo:</label>
+                    <input type="text" id="title" name="title" class="form-input">
+                </div>
+
+                <div>
+                    <br>
+                    <label for="rating" class="form-label">Rating:</label>
+                    <input type="text" id="rating" name="rating" class="form-input">
+                </div>
+
+                <div>
+                    <br>
+                    <label for="awards" class="form-label">Awards:</label>
+                    <input type="text" id="awards" name="awards" class="form-input"> 
+                </div>
+
+                <div>
+                    <br>
+                    <label for="length" class="form-label">Length:</label>
+                    <input type="text" id="length" name="length" class="form-input">
+                </div>
+
+                <div>
+                    <br>
+                    <label for="release_date" class="form-label">Release Date:</label>
+                    <input type="date" id="release_date" name="release_date" class="form-input">
+                </div>
+
+                <div>
+                    <br>
+                    <p>Actores que participaron:</p>
+                    <%actors.forEach(actor =>{ %>
+                        <div>
+                            <input id="<% actor.first_name %>" type="checkbox" name="actors" class="form-input" value="<%= actor.id %>">
+                            <label for="<%= actor.first_name %>"><%= actor.first_name %></label>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <div>
+                    <br>
+                    <button type="submit" class="buy-now-button">Guardar</button>
+                </div>
+                
+            </form>
+        </body>
+</html>

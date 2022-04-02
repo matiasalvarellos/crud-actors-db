@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AGREGAR ACTOR/ACTRIZ </title>
+        <link rel='stylesheet' href='/css/style.css' />
+    </head>
+        <body>
+            <figure>
+                <img src="/img/logo-DH.png" alt="Logo Digital House">
+            </figure>
+                <form action="/actors/create" method="POST">
+                    <h1>FORMULARIO DE CREACIÓN </h1>
+                    <div>
+                        <br>
+                        <label for="first_name" class="form-label">Nombre:</label>
+                        <input type="text" id="first_name" name="first_name" class="form-input">
+                    </div>
+                    
+                    <div>
+                        <br>
+                        <label for="last_name" class="form-label">Apellido:</label>
+                        <input type="text" id="last_name" name="last_name" class="form-input">
+                    </div>
+
+                    <div>
+                        <br>
+                        <label for="rating" class="form-label">Rating:</label>
+                        <input type="text" id="rating" name="rating" class="form-input">
+                    </div>
+
+                    <div>
+                        <br>
+                        <button type="submit" class="buy-now-button">Guardar</button>
+                    </div>
+                </form>
+        </body>
+</html>
