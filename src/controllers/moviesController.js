@@ -6,14 +6,14 @@ const moviesController = {
         db.Movie.findAll({
             include: [{association: "genres"}]
         })
-        .then(movies => {
+        .then(function(movies){
             res.render('moviesList', {movies})
         })
     },
 
     'detail': (req, res) => {
         db.Movie.findByPk(req.params.id)
-        .then(movie => {
+        .then(function(movie){
             res.render('moviesDetail', {movie});
         });
     },
@@ -25,7 +25,7 @@ const moviesController = {
             limit: 5
         })
 
-        .then(movies => {
+        .then(function(movies){
             res.render('newestMovies', {movies});
         });
     },
@@ -38,13 +38,13 @@ const moviesController = {
                 ['rating', 'DESC']
             ]
         })
-        .then(movies => {
+        .then(function (movies){
             res.render('recommendedMovies.ejs', {movies});
         });
     },
     'add': (req, res) => {
         db.Actor.findAll()
-        .then(actors => {
+        .then(function (actors){
             res.render('moviesAdd', {actors: actors});
         })
     },
@@ -59,10 +59,11 @@ const moviesController = {
         }).then(function(movie){
             //al metodo setActors le paso los id de los actores que seleccione
             //esto setea los registros en la tabla pivot(actor_movie)
-            movie.setActors(req.body.actors).then(()=>{
-                res.redirect("/movies")
-            });    
+            return movie.setActors(req.body.actors)
         })
+        .then(function(){
+           return res.redirect("/movies")
+        });    
     },
     'edit': (req, res) =>{
         let actors = db.Actor.findAll();
@@ -70,7 +71,7 @@ const moviesController = {
 
         Promise.all([actors, movie])
         .then(function([actors, movie]){
-            res.render('moviesEdit', {actors: actors, movie:movie});
+            return res.render('moviesEdit', {actors: actors, movie:movie});
         });
     },
 
@@ -86,15 +87,16 @@ const moviesController = {
                 id: req.params.id
             }
         })
-        .then(()=>{
-            db.Movie.findByPk(req.params.id)
-            .then(movieFound => {
-                //al metodo setActors le paso los id de los actores que seleccione
-                //esto setea/actualiza los registros en la tabla pivot(actor_movie)
-                movieFound.setActors(req.body.actors).then(function(){
-                    res.redirect("/movies")
-                })
-            })
+        .then(function(){
+            return db.Movie.findByPk(req.params.id) 
+        })
+        .then(function(movieFound){
+            //al metodo setActors le paso los id de los actores que seleccione
+            //esto setea/actualiza los registros en la tabla pivot(actor_movie)
+           return movieFound.setActors(req.body.actors)
+        })
+        .then(function(){
+           return res.redirect("/movies")
         })
     }, 
     'destroy':(req, res) =>{
@@ -107,47 +109,55 @@ const moviesController = {
                 favorite_movie_id: req.params.id
             }
         })
-        .then(()=>{
+        .then(function(){
             //llamo a la tabla pivot
             //elimino todos los registros de la tabla pivot que tengan el id de la pelicula a eliminar
-            db.ActorMovie.destroy({
+            return db.ActorMovie.destroy({
                 where:{
                     movie_id: req.params.id
                 }
-            }).then(()=>{
-                //elimino la pelicula
-                db.Movie.destroy({
-                    where:{
-                        id: req.params.id
-                    }
-                }).then(function(){
-                    res.redirect("/movies")
-                })
             })
+        })
+        .then(function(){
+            //elimino la pelicula
+            return db.Movie.destroy({
+                where:{
+                    id: req.params.id
+                }
+            })
+        })
+        .then(function(){
+            return res.redirect("/movies")
         })
 
         //----- Otra forma de hacerlo ----- //
 
-        // let promiseUpdate = db.Actor.update({
+        // db.Actor.update({
         //     favorite_movie_id: null
         // },{
         //     where:{
         //         favorite_movie_id: req.params.id
         //     }
         // })
-        // let promiseActorMovie = db.ActorMovie.destroy({
-        //     where:{
-        //         movie_id: req.params.id
-        //     }
+        // .then(function(){
+        //     return db.Movie.findByPk(req.params.id)
         // })
-        // let promiseMovie = db.Movie.destroy({
-        //     where:{
-        //         id: req.params.id
-        //     }
+        // .then(function(movieFound){
+        //     //elimino los registros de la tabla pivot con metodo setActors pasando array vacio
+        //     return movieFound.setActors([]);
         // })
-        // Promise.all([promiseUpdate, promiseActorMovie, promiseMovie]).then(function(){
-        //     res.redirect("/")
+        // .then(function(){
+        //     //elimino la pelicula
+        //     return db.Movie.destroy({
+        //         where:{
+        //             id: req.params.id
+        //         }
+        //     })
         // })
+        // .then(function(){
+        //     return res.redirect("/movies")
+        // })
+        
     }
 }
 
