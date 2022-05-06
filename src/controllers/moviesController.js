@@ -1,16 +1,27 @@
 const db = require('../database/models');
 const sequelize = db.sequelize;
+const { Op } = require("sequelize");
 
 const moviesController = {
-    'list': (req, res) => {
-        db.Movie.findAll({
+    'list': async (req, res) => {
+        let movies = await db.Movie.findAll({
             include: [{association: "genres"}]
         })
-        .then(function(movies){
-            res.render('moviesList', {movies})
+        let actors = await db.Actor.findAll()
+
+        res.render('moviesList', {movies, actors})
+       
+    },
+    'search': function (req, res, next) {
+        db.Movie.findAll({
+            where: {
+                title: { [Op.like]: '%' + req.query.search + '%' },
+            }
+        })
+        .then(function (movies) {
+            res.json(movies)
         })
     },
-
     'detail': (req, res) => {
         db.Movie.findByPk(req.params.id)
         .then(function(movie){
@@ -65,14 +76,15 @@ const moviesController = {
            return res.redirect("/movies")
         });    
     },
-    'edit': (req, res) =>{
-        let actors = db.Actor.findAll();
-        let movie = db.Movie.findByPk(req.params.id);
-
-        Promise.all([actors, movie])
-        .then(function([actors, movie]){
-            return res.render('moviesEdit', {actors: actors, movie:movie});
-        });
+    'edit': async (req, res) =>{
+        try{     
+            let actors = await db.Actor.findAll();
+            let movie = await db.Movie.findByPk(req.params.id);
+            
+            return res.render('moviesEdit', {actors: actors, movie:movie})
+        }catch(error){
+            console.log(error);
+        }
     },
 
     'update':(req, res) =>{
@@ -158,6 +170,20 @@ const moviesController = {
         //     return res.redirect("/movies")
         // })
         
+    },
+    api: async (req, res) => {
+        let page = req.query.page - 1 || 0;
+
+        let movies = await db.Movie.findAll({
+            limit: 3,
+            offset: page <= 0 ? 0 : page * 3,
+        })
+
+        res.json({
+            data: movies,
+            next: page >= 0 ? `http://localhost:3001/movies/api?page=${page + 2}` : null,
+            prev: page > 0 ? `http://localhost:3001/movies/api?page=${page}` : null
+        });
     }
 }
 

@@ -9,8 +9,18 @@
             <a class="active" href="/">Inicio</a>
             <a href="/movies">Listado de Peliculas</a>
             <a href="/actors">Listado de Actores</a>
-            <a href="/genres">Listado de Generos</a>           
+            <a href="/genres">Listado de Generos</a>
+                      
           </nav>
+            <div>
+              <h1>Buscador de Peliculas</h1>
+              <form action="/movies/search" method="GET">
+                <input type="text" name="search" id="">
+                <button type="submit">
+                  buscar
+                </button>
+              </form> 
+            </div>
             <figure>
               <img src="/img/logo-DH.png" alt="Logo Digital House">
             </figure>
